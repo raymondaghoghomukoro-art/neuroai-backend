@@ -1,20 +1,52 @@
-import OpenAI from "openai";
-
 export default async function handler(req, res) {
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-  });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-      { role: "user", content: req.body.message }
-    ]
-  });
+  const { message, mode } = req.body;
 
-  res.status(200).json({
-    reply: response.choices[0].message.content
-  });
+  let systemPrompt = "You are a helpful AI assistant.";
+
+  if (mode === "kids") {
+    systemPrompt = "You are a friendly AI teacher that tells fun and educational stories for children.";
+  }
+
+  if (mode === "business") {
+    systemPrompt = "You are a smart business coach that helps people make money, start businesses, and grow online.";
+  }
+
+  try {
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message }
+        ]
+      })
+
+    });
+
+    const data = await response.json();
+
+    const reply = data.choices[0].message.content;
+
+    res.status(200).json({ reply });
+
+  } catch (error) {
+
+    res.status(500).json({ error: "AI request failed" });
+
+  }
 
 }
