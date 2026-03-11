@@ -1,12 +1,12 @@
 {
   "name": "neuroai-backend",
   "version": "1.0.0",
-  "description": "NeuroAI backend",
-  "main": "api/chat.js",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "start": "node api/chat.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "node-fetch": "^3.3.2"
+    "express": "^4.18.2"
   }
 }
