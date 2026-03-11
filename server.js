@@ -1,54 +1,38 @@
-export default async function handler(req, res) {
+import express from "express";
 
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+// Home route
+app.get("/", (req, res) => {
+  res.send("NeuroAI backend running 🚀");
+});
+
+// Example AI route
+app.post("/api/ask", (req, res) => {
+  const { message } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
   }
 
-  const { message, mode } = req.body;
+  // Temporary response (you can connect OpenAI later)
+  res.json({
+    reply: `NeuroAI received your message: ${message}`
+  });
+});
 
-  let systemPrompt = "You are a helpful AI assistant.";
+// Health check route
+app.get("/health", (req, res) => {
+  res.json({ status: "OK", service: "NeuroAI Backend" });
+});
 
-  if (mode === "kids") {
-    systemPrompt = "You are a friendly AI teacher who tells fun stories for children.";
-  }
+// Render port
+const PORT = process.env.PORT || 3000;
 
-  if (mode === "business") {
-    systemPrompt = "You are a smart business expert helping people make money online.";
-  }
-
-  try {
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: message }
-        ]
-      })
-
-    });
-
-    const data = await response.json();
-
-    const reply = data.choices[0].message.content;
-
-    res.status(200).json({ reply });
-
-  } catch (error) {
-
-    console.error(error);
-
-    res.status(500).json({ error: "AI request failed" });
-
-  }
-
-}
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
