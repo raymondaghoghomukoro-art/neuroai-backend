@@ -3,16 +3,13 @@ import cors from "cors";
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Home route
 app.get("/", (req, res) => {
   res.send("NeuroAI backend running 🚀");
 });
 
-// Example AI route
 app.post("/api/ask", (req, res) => {
   const { message } = req.body;
 
@@ -25,7 +22,6 @@ app.post("/api/ask", (req, res) => {
   });
 });
 
-// Health check
 app.get("/health", (req, res) => {
   res.json({ status: "OK", service: "NeuroAI Backend" });
 });
