@@ -20,21 +20,18 @@ app.post("/api/ask", (req, res) => {
     return res.status(400).json({ error: "Message is required" });
   }
 
-  // Temporary response (you can connect OpenAI later)
   res.json({
     reply: `NeuroAI received your message: ${message}`
   });
 });
 
-// Health check route
+// Health check
 app.get("/health", (req, res) => {
   res.json({ status: "OK", service: "NeuroAI Backend" });
 });
 
-// Render port
 const PORT = process.env.PORT || 3000;
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
