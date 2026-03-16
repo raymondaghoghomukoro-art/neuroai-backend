@@ -24,19 +24,13 @@ app.post("/chat", async (req, res) => {
         {
           role: "system",
           content:
-            "You are NeuroAI, an intelligent AI specializing in neuroscience and artificial intelligence."
+            "You are NeuroAI, an intelligent AI specializing in neuroscience and artificial intelligence.",
         },
-        {
-          role: "user",
-          content: userMessage
-        }
-      ]
+        { role: "user", content: userMessage },
+      ],
     });
 
-    res.json({
-      reply: completion.choices[0].message.content
-    });
-
+    res.json({ reply: completion.choices[0].message.content });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong" });
