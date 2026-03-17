@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 44baa93 (fix backend final)
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -46,4 +49,9 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+<<<<<<< HEAD
 >>>>>>> b62e7cff1cc41c75994908d3ff78562bb14eb5f1
+=======
+=======
+>>>>>>> 8135a63 (Install dependencies)
+>>>>>>> 44baa93 (fix backend final)
