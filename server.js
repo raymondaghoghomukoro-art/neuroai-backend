@@ -31,7 +31,7 @@ app.post("/chat", async (req, res) => {
     });
 
     res.json({
-      reply: completion.choices[0].message.content,
+      reply: `NeuroAI received your message: ${message}`,
     });
   } catch (error) {
     console.error(error);
