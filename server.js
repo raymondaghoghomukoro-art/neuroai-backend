@@ -15,32 +15,29 @@ const openai = new OpenAI({
 });
 
 app.post("/api/ask", async (req, res) => {
+  console.log("📩 Request received");
+
   const userMessage = req.body.message;
 
   try {
+    console.log("🧠 Sending request to OpenAI...");
+
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        {
-          role: "system",
-          content:
-            "You are NeuroAI, an intelligent AI specializing in neuroscience and artificial intelligence.",
-        },
+        { role: "system", content: "You are NeuroAI." },
         { role: "user", content: userMessage },
       ],
     });
 
+    console.log("✅ OpenAI responded");
+
     res.json({
       reply: completion.choices[0].message.content,
     });
+
   } catch (error) {
-    console.error(error);
+    console.error("❌ ERROR:", error);
     res.status(500).json({ error: "Something went wrong" });
   }
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
