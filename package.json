@@ -1,37 +1,19 @@
 {
   "name": "neuroai-backend",
   "version": "1.0.0",
-<<<<<<< HEAD
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-=======
-  "type": "module",
+  "description": "NeuroAI backend server",
   "main": "server.js",
-<<<<<<< HEAD
->>>>>>> b62e7cff1cc41c75994908d3ff78562bb14eb5f1
-=======
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
-<<<<<<< HEAD
-=======
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
->>>>>>> 8135a63 (Install dependencies)
->>>>>>> 44baa93 (fix backend final)
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "openai": "^4.0.0"
   }
 }
