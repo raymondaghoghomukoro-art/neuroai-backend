@@ -54,8 +54,9 @@ app.post("/api/ask", async (req, res) => {
 
   } catch (error) {
   console.error("❌ FULL ERROR:", error);
+
   res.status(500).json({
-    error: error.message || "Something went wrong"
+    error: error?.message || JSON.stringify(error)
   });
 }
 
