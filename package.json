@@ -1,12 +1,11 @@
 {
   "name": "neuroai-backend",
   "version": "1.0.0",
-  "description": "NeuroAI backend server",
-  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js"
-  },
+  }
+}
   "keywords": [],
   "author": "",
   "license": "ISC",
