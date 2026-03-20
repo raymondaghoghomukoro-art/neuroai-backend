@@ -1,3 +1,12 @@
+// ✅ ADD THIS AT THE VERY TOP
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION:", err);
+});
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -10,6 +19,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔥 OPTIONAL DEBUG (you can remove later)
+console.log("API KEY:", process.env.OPENAI_API_KEY);
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -18,6 +30,10 @@ app.post("/api/ask", async (req, res) => {
   console.log("📩 Request received");
 
   const userMessage = req.body.message;
+
+  if (!userMessage) {
+    return res.status(400).json({ error: "Message is required" });
+  }
 
   try {
     console.log("🧠 Sending request to OpenAI...");
@@ -40,4 +56,10 @@ app.post("/api/ask", async (req, res) => {
     console.error("❌ ERROR:", error);
     res.status(500).json({ error: "Something went wrong" });
   }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
