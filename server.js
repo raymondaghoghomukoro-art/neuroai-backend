@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 44baa93 (fix backend final)
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -36,7 +31,7 @@ app.post("/api/ask", async (req, res) => {
     });
 
     res.json({
-      reply: `NeuroAI received your message: ${message}`,
+      reply: completion.choices[0].message.content,
     });
   } catch (error) {
     console.error(error);
@@ -49,9 +44,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-<<<<<<< HEAD
->>>>>>> b62e7cff1cc41c75994908d3ff78562bb14eb5f1
-=======
-=======
->>>>>>> 8135a63 (Install dependencies)
->>>>>>> 44baa93 (fix backend final)
