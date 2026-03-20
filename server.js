@@ -53,10 +53,11 @@ app.post("/api/ask", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ ERROR:", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
+  console.error("❌ FULL ERROR:", error);
+  res.status(500).json({
+    error: error.message || "Something went wrong"
+  });
+}
 
 const PORT = process.env.PORT || 3000;
 
