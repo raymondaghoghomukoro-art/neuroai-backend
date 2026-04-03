@@ -1,4 +1,4 @@
-// ✅ ADD THIS AT THE VERY TOP
+// ✅ ERROR HANDLING
 process.on("uncaughtException", (err) => {
   console.error("UNCAUGHT EXCEPTION:", err);
 });
@@ -7,6 +7,7 @@ process.on("unhandledRejection", (err) => {
   console.error("UNHANDLED REJECTION:", err);
 });
 
+// ✅ IMPORTS
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -19,47 +20,84 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔥 OPTIONAL DEBUG (you can remove later)
-console.log("API KEY:", process.env.OPENAI_API_KEY);
-
+// ✅ OPENAI
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// 🧠 MEMORY STORE (simple in-memory storage)
+const conversations = {}; // { sessionId: [messages] }
+
+// ✅ MAIN ROUTE
 app.post("/api/ask", async (req, res) => {
-  console.log("📩 Request received");
+  const { message, mode, sessionId } = req.body;
 
-  const userMessage = req.body.message;
-
-  if (!userMessage) {
+  if (!message) {
     return res.status(400).json({ error: "Message is required" });
   }
 
-  try {
-    console.log("🧠 Sending request to OpenAI...");
+  // 🧠 CREATE SESSION IF NOT EXISTS
+  if (!conversations[sessionId]) {
+    conversations[sessionId] = [];
+  }
 
+  try {
+    // 🎭 PERSONALITY SYSTEM
+    let systemPrompt = "You are NeuroAI.";
+
+    if (mode === "neuro") {
+      systemPrompt = "You are NeuroAI, a highly intelligent, futuristic AI with deep reasoning, clarity, and powerful insights. Speak confidently and intelligently.";
+    }
+
+    if (mode === "science") {
+      systemPrompt = "You are a scientific AI. Explain things clearly, logically, and based on facts. Make complex ideas simple.";
+    }
+
+    if (mode === "business") {
+      systemPrompt = "You are a business expert AI. Focus on money, growth, strategy, and actionable advice.";
+    }
+
+    if (mode === "general") {
+      systemPrompt = "You are a friendly and helpful AI assistant.";
+    }
+
+    // 🧠 BUILD MESSAGE HISTORY
+    const history = conversations[sessionId];
+
+    const messages = [
+      { role: "system", content: systemPrompt },
+      ...history,
+      { role: "user", content: message },
+    ];
+
+    // 🤖 CALL OPENAI
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are NeuroAI." },
-        { role: "user", content: userMessage },
-      ],
+      messages,
     });
 
-    console.log("✅ OpenAI responded");
+    const reply = completion.choices[0].message.content;
 
-    res.json({
-      reply: completion.choices[0].message.content,
-    });
+    // 💾 SAVE MEMORY
+    history.push({ role: "user", content: message });
+    history.push({ role: "assistant", content: reply });
+
+    // 🔒 LIMIT MEMORY (last 10 messages)
+    if (history.length > 10) {
+      history.splice(0, history.length - 10);
+    }
+
+    res.json({ reply });
 
   } catch (error) {
-  console.error("❌ FULL ERROR:", error);
+    console.error(error);
+    res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+});
 
-  res.status(500).json({
-    error: error?.message || JSON.stringify(error)
-  });
-}
-
+// ✅ START SERVER
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
