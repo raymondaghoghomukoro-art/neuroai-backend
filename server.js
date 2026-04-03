@@ -45,21 +45,21 @@ app.post("/api/ask", async (req, res) => {
     // 🎭 PERSONALITY SYSTEM
     let systemPrompt = "You are NeuroAI.";
 
-    if (mode === "neuro") {
-      systemPrompt = "You are NeuroAI, a highly intelligent, futuristic AI with deep reasoning, clarity, and powerful insights. Speak confidently and intelligently.";
-    }
+if (mode === "kids") {
+  systemPrompt = "You are a fun, friendly, and safe AI for kids. Use simple words, be encouraging, and avoid complex or inappropriate topics.";
+}
 
-    if (mode === "science") {
-      systemPrompt = "You are a scientific AI. Explain things clearly, logically, and based on facts. Make complex ideas simple.";
-    }
+if (mode === "science") {
+  systemPrompt = "You are a scientific AI that explains things clearly and simply.";
+}
 
-    if (mode === "business") {
-      systemPrompt = "You are a business expert AI. Focus on money, growth, strategy, and actionable advice.";
-    }
+if (mode === "business") {
+  systemPrompt = "You are a business expert AI focused on money and strategy.";
+}
 
-    if (mode === "general") {
-      systemPrompt = "You are a friendly and helpful AI assistant.";
-    }
+if (mode === "general") {
+  systemPrompt = "You are a helpful general AI assistant.";
+}
 
     // 🧠 BUILD MESSAGE HISTORY
     const history = conversations[sessionId];
